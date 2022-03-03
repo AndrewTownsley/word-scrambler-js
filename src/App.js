@@ -15,10 +15,10 @@ function App() {
   
   const splitSentence = async () => {
     // let splitWords = await sentence.split(' ')
-    let splitWords = await sentence.split(/(\s+)/)
     // let splitLetters = splitWords.map((word) => shuffle(word.split('')))
-    let splitLetters = splitWords.map((word) => shuffleStr(word).split(''))
     // let splitLetters = splitWords.map((word) => console.log("word",word))
+    let splitWords = await sentence.split(/(\s+)/)
+    let splitLetters = splitWords.map((word) => word.length >2 ? shuffleStr(word).split('') : word)
     setShuffledSentence(splitLetters)
     console.log("splitWords:", splitWords);
     console.log("splitLetters:", splitLetters);
