@@ -14,14 +14,29 @@ function App() {
   }
   
   const splitSentence = async () => {
-    let splitWords = await sentence.split(' ')
-    let splitLetters = splitWords.map((word) => shuffle(word.split('')))
+    // let splitWords = await sentence.split(' ')
+    let splitWords = await sentence.split(/(\s+)/)
+    // let splitLetters = splitWords.map((word) => shuffle(word.split('')))
+    let splitLetters = splitWords.map((word) => shuffleStr(word).split(''))
     // let splitLetters = splitWords.map((word) => console.log("word",word))
     setShuffledSentence(splitLetters)
     console.log("splitWords:", splitWords);
     console.log("splitLetters:", splitLetters);
     }
+
+    // function shuffleArray(array) {
+    //   for (let i = array.length - 1; i > 0; i--) {
+    //     let j = Math.floor(Math.random() * (i + 1));
+    //     [array[i], array[j]] = [array[j], array[i]];
+    //   }
+    //   return array;
+    // }
     
+    function shuffleStr(str) {
+      const randomChars = shuffle([...str.replace(/\s+/g, '')]);
+      let index = 0;
+      return str.replace(/\S/g, () => randomChars[index++]);
+    }
     
     const shuffle = (a) => {
       for (let i = a.length - 1; i > 0; i--) {
