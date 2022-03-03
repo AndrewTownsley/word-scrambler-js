@@ -11,46 +11,44 @@ function App() {
     await fetch(`https://api.hatchways.io/assessment/sentences/${nextNumber}`)
     .then(res => res.json())
     .then(data => setSentence(data.data.sentence))
-    // .then(data => console.log(data.data.sentence))
-    // let splitWords = sentence.split(' ')
-    // let splitLetters = shuffle(splitWords.map((word) => word.split('')))
-    // setShuffledSentence(splitWords)
-    // console.log(sentence);
   }
   
-  const splitSentence = () => {
-    let splitWords = sentence.split(' ')
-    let splitLetters = shuffle(splitWords.map((word) => shuffle(word.split(''))))
+  const splitSentence = async () => {
+    let splitWords = await sentence.split(' ')
+    let splitLetters = splitWords.map((word) => shuffle(word.split('')))
+    // let splitLetters = splitWords.map((word) => console.log("word",word))
     setShuffledSentence(splitLetters)
+    console.log("splitWords:", splitWords);
     console.log("splitLetters:", splitLetters);
     }
     
-    useEffect(() => {
-      fetchSentence();
-      splitSentence()
-    }, [sentence, setSentence, nextNumber])
-  
-  const shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+    
+    const shuffle = (a) => {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
-    return a;
-  }
-  
-  const fetchNumberCounter = () => {
+    
+    const fetchNumberCounter = () => {
       if(nextNumber < 10) {
         setNextNumber(nextNumber + 1)
       } else {
         setNextNumber(1)
       }
-  }
-  
+    }
+    
+    useEffect(() => {
+      fetchSentence()
+      splitSentence()
+    }, [sentence, setSentence, nextNumber])
+
   return (
     <div className="App">
         <section>
-          {shuffledSentence}
-          {/* <p>Sentence: </p>{sentence} */}
+          <p>{shuffledSentence}</p>
+          <span>{sentence}</span>
         </section>
         <button onClick={fetchNumberCounter}>Next</button>
     </div>
