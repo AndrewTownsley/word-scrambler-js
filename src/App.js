@@ -1,11 +1,13 @@
 import './App.css';
 import { useState, useEffect } from 'react';
+import Keys from './components/Keys';
 
 
 function App() {
   const [sentence, setSentence] = useState([]);
   const [nextNumber, setNextNumber] = useState(1);
   const [shuffledSentence, setShuffledSentence] = useState('')
+  const [score, setScore] = useState(0);
   
   const fetchSentence = async () => {
     await fetch(`https://api.hatchways.io/assessment/sentences/${nextNumber}`)
@@ -14,36 +16,25 @@ function App() {
   }
   
   const splitSentence = async () => {
-    // let splitWords = await sentence.split(' ')
-    // let splitLetters = splitWords.map((word) => shuffle(word.split('')))
-    // let splitLetters = splitWords.map((word) => console.log("word",word))
     let splitWords = await sentence.split(/(\s+)/)
     let splitLetters = splitWords.map((word) => word.length >2 ? shuffleStr(word).split('') : word)
     setShuffledSentence(splitLetters)
-    console.log("splitWords:", splitWords);
-    console.log("splitLetters:", splitLetters);
+    // console.log("splitWords:", splitWords);
+    // console.log("splitLetters:", splitLetters);
     }
-
-    // function shuffleArray(array) {
-    //   for (let i = array.length - 1; i > 0; i--) {
-    //     let j = Math.floor(Math.random() * (i + 1));
-    //     [array[i], array[j]] = [array[j], array[i]];
-    //   }
-    //   return array;
-    // }
     
-    function shuffleStr(str) {
+    const shuffleStr = (str) => {
       const randomChars = shuffle([...str.replace(/\s+/g, '')]);
       let index = 0;
       return str.replace(/\S/g, () => randomChars[index++]);
     }
     
-    const shuffle = (a) => {
-      for (let i = a.length - 1; i > 0; i--) {
+    const shuffle = (str) => {
+      for (let i = str.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+        [str[i], str[j]] = [str[j], str[i]];
       }
-      return a;
+      return str;
     }
     
     const fetchNumberCounter = () => {
@@ -56,7 +47,9 @@ function App() {
     
     useEffect(() => {
       fetchSentence()
-      splitSentence()
+      if(sentence) {
+        splitSentence()
+      }
     }, [sentence, setSentence, nextNumber])
 
   return (
@@ -66,6 +59,12 @@ function App() {
           <span>{sentence}</span>
         </section>
         <button onClick={fetchNumberCounter}>Next</button>
+        <p>Guess the sentence! Start Typing.</p>
+        <p>The yellow blocks are meant for spaces.</p>
+        <h2>score: {score}</h2>
+        <Keys
+          sentence={sentence}
+        />
     </div>
   );
 }
