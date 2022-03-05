@@ -55,7 +55,7 @@ function App() {
   return (
     <div className="App">
         <section>
-          <p>{shuffledSentence}</p>
+          <h1>{shuffledSentence}</h1>
           <span>{sentence}</span>
         </section>
         <button onClick={fetchNumberCounter}>Next</button>
