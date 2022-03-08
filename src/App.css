@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+input:focus {
+  outline: 4px solid #d818ff;
+}
+
 .key-container {
   display: flex;
   flex-wrap: wrap;
@@ -18,4 +22,8 @@
 
 .space {
   background-color: #ffb74d;
+}
+
+.match {
+  background-color: #4caf50;
 }
