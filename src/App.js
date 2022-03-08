@@ -10,20 +10,8 @@ function App() {
   const [shuffledSentence, setShuffledSentence] = useState('')
   const [score, setScore] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // const fetchSentence = async () => {
-  //   await fetch(`https://api.hatchways.io/assessment/sentences/${nextNumber}`)
-  //   .then(res => {
-  //     if(res.ok) {
-  //       return res.json();
-  //     }
-  //     throw new Error('Request failed!');
-  //   })
-  //   .then(data => setSentence(data.data.sentence))
-  //   .catch(err => console.log(err));
-  // }
+  const [keyArray, setKeyArray] = useState([])
 
-  
   const fetchSentence = async () => {
     setIsLoading(true);
     try {
@@ -91,6 +79,8 @@ function App() {
           <>
             <Keys
               sentence={sentence}
+              keyArray={keyArray}
+              setKeyArray={setKeyArray}
             />
           </>
           }

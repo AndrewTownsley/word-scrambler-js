@@ -1,31 +1,41 @@
-import React, { useState} from 'react'
+import React, { useEffect, useState} from 'react'
 
-  ///////////////////////////////////////////////////
-  // - isLoading element to prevent error from fetching api data
-  /////////////////////////////////////////////////
-  // - isLoading element to prevent error from fetching api data
-  // - isLoading element to prevent error from fetching api data
-
-const Keys = ({ sentence }) => {
+const Keys = ({ sentence, keyArray, setKeyArray }) => {
     const [keyMatch, setKeyMatch] = useState(false)
+    // const [keyArray, setKeyArray] = useState([])
     let keyChars = sentence.split('');
-    const sentenceList = {...keyChars};
-    // const newSentenceList = sentenceList.forEach((item) => ({
-    //     ...item,
-    //     match: false,
-    // })
-    // )
-    // console.log(keyChars);
-    // console.log(sentenceList);
-    
+    const keyCharToObj = keyChars.map((item) => {
+        return { match: false, name: item}
+    })
 
-    const checkKeyInput = (i, e, keyItem) => {
-        let keyInputArray = []
-        if(e.target.value === keyItem && Number(e.target.name) === i)
-            setKeyMatch(true)
-            keyInputArray = [ keyInputArray, ...keyItem]
-            console.log(keyInputArray);
-        }
+    const mapObj = keyCharToObj.map((obj) => (
+        console.log(obj.name)
+    ))
+    // console.log(mapObj);
+
+        console.log("keyToObj:",keyCharToObj);
+
+    // useEffect(() => {
+    //     const keyCharToObj = () => {
+    //         const newKeyChars = [...keyChars]
+    //         newKeyChars.map((item) => {
+    //             return {...item, match: false}
+    //         })
+    //         setKeyArray(newKeyChars)
+    //         console.log(keyArray);
+    //     }
+    //     keyCharToObj()
+    // }, [keyArray])
+    //     console.log("keyArray:",keyArray);
+    
+    // const checkKeyInput = (i, e, keyItem) => {
+    //     const newKeyChars = [...keyChars];
+    //     if(e.target.value === keyItem) {
+    //         setKeyMatch(true)
+    //         newKeyChars[i].keyMatch = !newKeyChars[i].keyMatch;
+    //         keyChars = [...newKeyChars]
+    //     }
+    // }
 
 //     const handleChange = (e, i) => {
 //         // when input equals maxLength of the input, autofocus the next input
@@ -43,10 +53,12 @@ const Keys = ({ sentence }) => {
         <p>{sentence}</p>
         <div className='key-container'>
             {
-                keyChars.map((keyItem, i) => (
+                
+                keyCharToObj.map((keyItem, i) => (
                     <input 
-                        onChange={(e) => checkKeyInput(i, e, keyItem)}
+                        // onChange={(e) => checkKeyInput(i, e, keyItem)}
                         // onChange={(e, i) => handleChange(e, i)}
+                        onChange={() => console.log(keyItem.match)}
                         type='text' 
                         name={i}
                         maxLength={1} 
