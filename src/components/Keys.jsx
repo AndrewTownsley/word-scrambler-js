@@ -4,7 +4,13 @@ import { nanoid } from 'nanoid'
 const Keys = ({ sentence }) => {
     const [keyMatch, setKeyMatch] = useState(false)
     const [keyArray, setKeyArray] = useState([])
+    const [keyInputCheckArray, setKeyInputCheckArray] = useState([]);
+    const [solution, setSolution] = useState(false);
     let keyChars = sentence.split('');
+    let keyCharsToArray = keyArray.map((item) => {
+        return item.name
+    })
+
 
     useEffect(() => {
         let keyObjectArray = keyChars.map((item) => {
@@ -12,7 +18,6 @@ const Keys = ({ sentence }) => {
         })
         setKeyArray(keyObjectArray)
     }, [sentence])
-    console.log("keyArray:", keyArray);
 
 // const checkKeyInput = (e, keyItem) => {
 //     if(keyItem.name === e.target.value) {
@@ -49,7 +54,7 @@ const Keys = ({ sentence }) => {
 //     console.log("keyMatch: ", keyMatch);
 //   }
 
-function checkKeyInput(e, id, keyItem) {
+const checkKeyInput = (e, id, keyItem) => {
     const newKeyArray = keyArray.map((item) => {
         if (item.id === keyItem.id && keyItem.name === e.target.value) {
         //   console.log(item.id, keyItem.id);
@@ -57,36 +62,58 @@ function checkKeyInput(e, id, keyItem) {
           ...item,
           keyMatch: !item.keyMatch,
         };
-        console.log("updatedItem: ",updatedItem);
+
+        setKeyInputCheckArray([...keyInputCheckArray, keyItem.name]);
         return updatedItem;
     }
     return item;
 });
 setKeyArray(newKeyArray);
-console.log("newKeyArray: ", newKeyArray);
-  }
+}
+
+console.log("keyInputCheckArray:",keyInputCheckArray);
+console.log("keyArray:", keyArray.map((item) => {
+    return item.name
+}));
+
+const checkCorrectSentence = (arr1, arr2) =>  {
+    if(arr1.length === arr2.length) {
+        arr1.every((item, idx) => {
+            if(item === arr2[idx]) {
+                setSolution(true)
+                return true;
+            }
+            return false
+        })
+        console.log(solution);
+    }
+}
 
   return (
     <>
         <p>{sentence}</p>
+        {
+            solution 
+            ? 
+            <h3>Success!! You Win!!</h3>
+            :
+            null
+        }
         <div className='key-container'>
             {
                 
                 keyArray.map((keyItem, i) => (
                         <input 
-                        // onChange={(e, id) => checkKeyInput(e, id, keyItem)}
-                        // onKeyUp={(e) => matchKey(e, i, keyItem)}
-                        type='text' 
-                        // name={i}
-                        maxLength={1} 
-                        autoComplete='off'
-                        // className={keyItem.keyMatch ? 'key-match' : 'key'}
-                        className={
+                            type='text' 
+                            maxLength={1} 
+                            autoComplete='off'
+                            className={
                                 !keyItem.keyMatch ? (keyItem.name === ' ' ? 'key space' : 'key')
                                 :
                                 (keyItem.name === ' ' ? 'key space match' : 'key-match')} 
                             key={i}
-                        onChange={(e, id) => checkKeyInput(e, id, keyItem)}
+                            onChange={(e, id) => checkKeyInput(e, id, keyItem)}
+                            onKeyUp={() => checkCorrectSentence(keyInputCheckArray, keyCharsToArray)}
                         >
                         </input>
                 ))
