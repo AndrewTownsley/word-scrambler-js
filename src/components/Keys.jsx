@@ -49,9 +49,9 @@ const Keys = ({ sentence }) => {
 //     console.log("keyMatch: ", keyMatch);
 //   }
 
-function checkKeyInput(id, keyItem) {
+function checkKeyInput(e, id, keyItem) {
     const newKeyArray = keyArray.map((item) => {
-        if (item.id === keyItem.id) {
+        if (item.id === keyItem.id && keyItem.name === e.target.value) {
         //   console.log(item.id, keyItem.id);
         const updatedItem = {
           ...item,
@@ -73,22 +73,22 @@ console.log("newKeyArray: ", newKeyArray);
             {
                 
                 keyArray.map((keyItem, i) => (
-                        <button 
+                        <input 
                         // onChange={(e, id) => checkKeyInput(e, id, keyItem)}
                         // onKeyUp={(e) => matchKey(e, i, keyItem)}
-                        // type='text' 
+                        type='text' 
                         // name={i}
-                        // maxLength={1} 
-                        // autoComplete='off'
-                        className={keyItem.keyMatch ? 'key-match' : 'key'}
-                        // className={
-                            //     !keyMatch ? (keyItem.name === ' ' ? 'key space' : 'key')
-                            //     :
-                            //     (keyItem.name === ' ' ? 'key space match' : 'key-match')} 
+                        maxLength={1} 
+                        autoComplete='off'
+                        // className={keyItem.keyMatch ? 'key-match' : 'key'}
+                        className={
+                                !keyItem.keyMatch ? (keyItem.name === ' ' ? 'key space' : 'key')
+                                :
+                                (keyItem.name === ' ' ? 'key space match' : 'key-match')} 
                             key={i}
-                            onClick={(id) => checkKeyInput(id, keyItem)}
+                        onChange={(e, id) => checkKeyInput(e, id, keyItem)}
                         >
-                        </button>
+                        </input>
                 ))
             }
         </div>
