@@ -8,7 +8,7 @@ const Keys = ({ sentence }) => {
 
     useEffect(() => {
         let keyObjectArray = keyChars.map((item) => {
-            return { keyMatch: false, name: item}
+            return { keyMatch: false, name: item, id: nanoid()}
         })
         setKeyArray(keyObjectArray)
     }, [sentence])
@@ -32,14 +32,38 @@ const Keys = ({ sentence }) => {
 //     }
 // }
 
-const checkKeyInput = (e, id, keyItem) => {
+// const checkKeyInput = (e, id, keyItem) => {
+//     console.log("id:", id);
+//     console.log("keyItem: ", keyItem.name);
+//     console.log("e.target.value: ",e.target.value);
+//     console.log("e.target.id: ",e.target.id);
+//     console.log("keyMatch: ", keyMatch);
+//     const newKeyArray = keyArray.map((item) => {
+//         // if(id === e.target.id && keyItem.name === e.target.value) {
+//         if(keyItem) {
+//             return {...keyItem, keyMatch: true}
+//         }
+//         return item;
+//     })
+//     setKeyArray(newKeyArray)
+//     console.log("keyMatch: ", keyMatch);
+//   }
+
+function checkKeyInput(id, keyItem) {
     const newKeyArray = keyArray.map((item) => {
-        if(id === e.target.id && keyItem.name === e.target.value) {
-            return {...keyItem, keyMatch: true}
-        }
-        return item;
-    })
-    setKeyArray(newKeyArray)
+        if (item.id === keyItem.id) {
+        //   console.log(item.id, keyItem.id);
+        const updatedItem = {
+          ...item,
+          keyMatch: !item.keyMatch,
+        };
+        console.log("updatedItem: ",updatedItem);
+        return updatedItem;
+    }
+    return item;
+});
+setKeyArray(newKeyArray);
+console.log("newKeyArray: ", newKeyArray);
   }
 
   return (
@@ -49,21 +73,22 @@ const checkKeyInput = (e, id, keyItem) => {
             {
                 
                 keyArray.map((keyItem, i) => (
-                        <input 
-                            onChange={(e, id) => checkKeyInput(keyItem)}
-                            // onKeyUp={(e) => matchKey(e, i, keyItem)}
-                            type='text' 
-                            name={i}
-                            id={nanoid()}
-                            maxLength={1} 
-                            autoComplete='off'
-                            className={
-                                !keyMatch ? (keyItem.name === ' ' ? 'key space' : 'key')
-                                :
-                                (keyItem.name === ' ' ? 'key space match' : 'key match')} 
+                        <button 
+                        // onChange={(e, id) => checkKeyInput(e, id, keyItem)}
+                        // onKeyUp={(e) => matchKey(e, i, keyItem)}
+                        // type='text' 
+                        // name={i}
+                        // maxLength={1} 
+                        // autoComplete='off'
+                        className={keyItem.keyMatch ? 'key-match' : 'key'}
+                        // className={
+                            //     !keyMatch ? (keyItem.name === ' ' ? 'key space' : 'key')
+                            //     :
+                            //     (keyItem.name === ' ' ? 'key space match' : 'key-match')} 
                             key={i}
+                            onClick={(id) => checkKeyInput(id, keyItem)}
                         >
-                        </input>
+                        </button>
                 ))
             }
         </div>

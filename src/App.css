@@ -24,6 +24,11 @@ input:focus {
   background-color: #ffb74d;
 }
 
+.key-match {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: #4caf50;
+}
 .match {
   background-color: #4caf50;
 }
